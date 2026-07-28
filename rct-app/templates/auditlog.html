@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<title>Audit Logs - RCT</title>
+
+<style>
+
+body {
+    margin:0;
+    font-family: Arial, Helvetica, sans-serif;
+    background:#f4f6f9;
+}
+
+
+/* HEADER */
+
+.header {
+
+    background:#1f4e79;
+    color:white;
+
+    padding:20px 35px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+}
+
+
+.header h1 {
+
+    margin:0;
+    font-size:28px;
+
+}
+
+
+.user {
+
+    font-size:14px;
+
+}
+
+
+
+/* CONTAINER */
+
+.container {
+
+    padding:30px;
+
+}
+
+
+/* CARD */
+
+.card {
+
+    background:white;
+
+    border-radius:12px;
+
+    padding:25px;
+
+    box-shadow:0 5px 15px rgba(0,0,0,0.08);
+
+}
+
+
+
+/* TITLE */
+
+.title {
+
+    font-size:22px;
+
+    font-weight:bold;
+
+    margin-bottom:20px;
+
+    color:#1f4e79;
+
+}
+
+
+
+/* TABLE */
+
+table {
+
+    width:100%;
+
+    border-collapse:collapse;
+
+}
+
+
+th {
+
+    background:#1f4e79;
+
+    color:white;
+
+    padding:14px;
+
+    text-align:left;
+
+}
+
+
+td {
+
+    padding:12px;
+
+    border-bottom:1px solid #ddd;
+
+    color:#333;
+
+}
+
+
+tr:hover {
+
+    background:#f5f9ff;
+
+}
+
+
+
+/* ACTION BADGE */
+
+
+.badge {
+
+    padding:6px 12px;
+
+    border-radius:20px;
+
+    font-size:12px;
+
+    font-weight:bold;
+
+    background:#ffe8e8;
+
+    color:#c0392b;
+
+}
+
+
+
+/* BUTTON */
+
+.back {
+
+    display:inline-block;
+
+    margin-top:20px;
+
+    padding:10px 18px;
+
+    background:#1f4e79;
+
+    color:white;
+
+    text-decoration:none;
+
+    border-radius:8px;
+
+}
+
+
+.back:hover {
+
+    opacity:.9;
+
+}
+
+
+
+.empty {
+
+    text-align:center;
+
+    padding:30px;
+
+    color:#777;
+
+}
+
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="header">
+
+<h1>
+RCT Audit Logs
+</h1>
+
+
+<div class="user">
+
+Naka-login: {{ username }}
+
+</div>
+
+
+</div>
+
+
+
+<div class="container">
+
+
+<div class="card">
+
+
+<div class="title">
+System Activity History
+</div>
+
+<form method="GET" style="margin-bottom:20px; display:flex; gap:10px;">
+
+<input
+type="text"
+name="search"
+placeholder="Search user, action, date..."
+value="{{ search }}"
+style="
+flex:1;
+padding:12px;
+border:1px solid #ccc;
+border-radius:8px;
+font-size:14px;
+">
+
+
+<button
+type="submit"
+style="
+background:#1f4e79;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+">
+
+Search
+
+</button>
+
+
+<a
+href="{{ url_for('audit_logs') }}"
+style="
+padding:12px 20px;
+background:#777;
+color:white;
+text-decoration:none;
+border-radius:8px;
+">
+
+Clear
+
+</a>
+
+
+</form>
+
+<table>
+
+
+<tr>
+
+<th>Date</th>
+
+<th>User</th>
+
+<th>Action</th>
+
+<th>Target</th>
+
+<th>Details</th>
+
+<th>IP Address</th>
+
+</tr>
+
+
+
+{% if logs %}
+
+
+{% for log in logs %}
+
+<tr>
+
+<td>
+{{ log.created_at }}
+</td>
+
+
+<td>
+{{ log.username }}
+</td>
+
+
+<td>
+
+<span class="badge">
+{{ log.action }}
+</span>
+
+</td>
+
+
+<td>
+{{ log.target }}
+</td>
+
+
+<td>
+{{ log.details }}
+</td>
+
+
+<td>
+{{ log.ip_address }}
+</td>
+
+
+</tr>
+
+
+{% endfor %}
+
+
+
+{% else %}
+
+
+<tr>
+
+<td colspan="6" class="empty">
+
+No audit activity yet.
+
+</td>
+
+</tr>
+
+
+{% endif %}
+
+
+
+</table>
+
+
+
+<a class="back" href="{{ url_for('dashboard') }}">
+← Back to Dashboard
+</a>
+
+
+</div>
+
+
+</div>
+
+
+
+</body>
+
+</html>
